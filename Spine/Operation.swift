@@ -213,7 +213,8 @@ class SaveOperation: Operation {
 		HTTPClient.request(request.method, URL: request.URL, payload: request.payload) { statusCode, responseData, networkError in
 
             if 400 ... 599 ~= statusCode! {
-                let error = NSError(domain: "networkError", code: statusCode!, userInfo: nil)
+                let info = NSDictionary(object: responseData!, forKey: "responseData") as [NSObject : AnyObject]
+                let error = NSError(domain: "networkError", code: statusCode!, userInfo: info)
                 self.result = Failable(error)
                 self.state = .Finished
                 return
