@@ -87,7 +87,7 @@ public class URLSessionClient: _HTTPClientProtocol {
 
 			// Network error
 			if let statusCode = response?.statusCode where 400 ... 599 ~= statusCode {
-				Spine.logError(.Networking, "\(request.URL) - \(error.localizedDescription)")
+				Spine.logError(.Networking, "\(request.URL) - \(error?.localizedDescription)")
 				
 			// Success
 			} else if let statusCode = response?.statusCode where 200 ... 299 ~= statusCode {
