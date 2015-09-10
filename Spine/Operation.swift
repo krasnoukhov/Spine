@@ -240,6 +240,8 @@ class SaveOperation: Operation {
 					
 					self.state = .Finished
 				}
+
+        self.spine.addOperation(relationshipOperation)
 			}
 		}
 	}
