@@ -191,4 +191,15 @@ public class LinkedResourceCollection: ResourceCollection {
 		removedResources = removedResources.filter { $0 !== resource }
 		addedResources = addedResources.filter { $0 !== resource }
 	}
+
+	/**
+	Adds the given resources to this collection, but does not mark them as added.
+
+	- parameter resources: The resources to add.
+	*/
+	public func addResourcesAsExisting(resources: [Resource]) {
+		for resource in resources {
+			addResourceAsExisting(resource)
+		}
+	}
 }
