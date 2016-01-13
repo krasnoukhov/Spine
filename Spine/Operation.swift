@@ -405,8 +405,15 @@ private class RelationshipReplaceOperation: RelationshipOperation {
 	
 	override func execute() {
 		let relatedResource = resource.valueForField(relationship.name) as! Resource
+
+		guard relatedResource.id != nil else {
+			self.result = Failable()
+			self.state = .Finished
+			return
+		}
+
 		let linkage = convertResourcesToLinkage([relatedResource])
-		
+
 		if let jsonPayload = try? NSJSONSerialization.dataWithJSONObject(["data": linkage], options: NSJSONWritingOptions(rawValue: 0)) {
 			let URL = router.URLForRelationship(relationship, ofResource: resource)
 			networkClient.request("PATCH", URL: URL, payload: jsonPayload, callback: handleNetworkResponse)
