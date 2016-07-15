@@ -350,7 +350,11 @@ class SaveOperation: ConcurrentOperation {
 			default: ()
 			}
 		}
-	}
+
+    if relationshipOperationQueue.operationCount == 0 {
+      relationshipsUpdated()
+    }
+  }
 	
 	override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
 		guard let path = keyPath, queue = object as? NSOperationQueue where path == "operations" && queue == relationshipOperationQueue else {
@@ -359,14 +363,18 @@ class SaveOperation: ConcurrentOperation {
 		}
 		
 		if queue.operationCount == 0 {
-			if result == nil {
-				self.deserializeIntoResource()
-				self.result = Failable.Success()
-			}
-
-			self.state = .Finished
+      relationshipsUpdated()
 		}
 	}
+  
+  func relationshipsUpdated() {
+    if result == nil {
+      self.deserializeIntoResource()
+      self.result = Failable.Success()
+    }
+    
+    self.state = .Finished
+  }
 }
 
 
